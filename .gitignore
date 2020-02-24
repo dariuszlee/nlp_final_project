@@ -1,0 +1,8 @@
+dali/
+damp_data/*.wav
+accompaniment.wav
+pretrained_models/
+._deepspeech-0.6.1-models
+deepspeech-0.6.1-models
+out/
+output/

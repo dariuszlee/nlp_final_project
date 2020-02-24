@@ -1,0 +1,3 @@
+[submodule "silence-removal"]
+	path = silence-removal
+	url = https://github.com/dariuszlee/silence-removal
