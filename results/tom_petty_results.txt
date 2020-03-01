@@ -1,0 +1,2 @@
+Deepspeech average 0.05107400666670279
+Google average 0.09033025201817957

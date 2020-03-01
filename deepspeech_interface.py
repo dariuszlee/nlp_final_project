@@ -80,6 +80,33 @@ class VersionAction(argparse.Action):
         exit(0)
 
 
+class DeepSpeechModel():
+    def __init__(self, model_path):
+        self.__model = Model(model_path, 100)
+        self.__desired_sample_rate = self.__model.sampleRate()
+        self.__args_extended = False
+        self.__args_json = False
+
+    def infer(self, input_path):
+        fin = wave.open(input_path, 'rb')
+        fs = fin.getframerate()
+        if fs != self.__desired_sample_rate:
+            # print('Warning: original sample rate ({}) is different than {}hz. Resampling might produce erratic speech recognition.'.format(fs, desired_sample_rate), file=sys.stderr)
+            fs, audio = convert_samplerate(input_path, self.__desired_sample_rate)
+        else:
+            audio = np.frombuffer(fin.readframes(fin.getnframes()), np.int16)
+
+        fin.close()
+
+        if self.__args_extended:
+            print(metadata_to_string(self.__model.sttWithMetadata(audio)))
+        elif self.__args_json:
+            print(metadata_json_output(self.__model.sttWithMetadata(audio)))
+        else:
+            output = self.__model.stt(audio)
+        return output
+
+
 def main():
     parser = argparse.ArgumentParser(description='Running DeepSpeech inference.')
     parser.add_argument('--model', required=True,

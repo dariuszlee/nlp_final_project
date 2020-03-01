@@ -1,3 +1,6 @@
 [submodule "silence-removal"]
 	path = silence-removal
 	url = https://github.com/dariuszlee/silence-removal
+[submodule "silence_removal"]
+	path = silence_removal
+	url = https://github.com/dariuszlee/silence-removal

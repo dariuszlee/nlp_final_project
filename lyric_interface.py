@@ -1,6 +1,9 @@
+import os
 import re
 import urllib.request
 from bs4 import BeautifulSoup
+
+lyrics_folder = "lyrics/"
  
 def get_lyrics(artist,song_title):
     artist = artist.lower()
@@ -26,16 +29,42 @@ def get_lyrics(artist,song_title):
     except Exception as e:
         raise e
 
-
-from os import listdir
-if __name__ == "__main__":
+def get_all_lyrics():
     artist_name = "Tom petty and the heartbreakers"
     for song in listdir('data'):
         song_name = song[3:-4]
         try:
             lyrics = get_lyrics(artist_name, song_name)
-            with open("lyrics/" + song[:-4] + ".txt", "w") as f:
+            with open(lyrics_folder + song[:-4] + ".txt", "w") as f:
                 f.writelines(lyrics) 
         except:
             print(song_name, " has error")
-    # print(get_lyrics("Tom petty and the heartbreakers", "I won't back down"))
+
+
+def remove_html_tags(text):
+    clean = re.compile('<.*?>')
+    clean_new_lines = re.compile('\\n')
+    # clean_backslashes = re.compile("\\")
+    text = re.sub(clean, '', text) 
+    text = re.sub(clean_new_lines, '', text)
+    text = text.replace('\\', '')
+    return text
+
+
+def get_all_lyrics_from_file():
+    lyric_song_list = []
+    for lyric_file in os.listdir(lyrics_folder):
+        song = lyric_file[:-4]
+        with open(lyrics_folder + lyric_file, "r") as f:
+            lyrics_txt = f.readlines()
+            for idx, line in enumerate(lyrics_txt):
+                line = remove_html_tags(line)
+                line = line.strip()
+                lyrics_txt[idx] = line
+            lyric_song_list.append((song, lyrics_txt)) 
+    return lyric_song_list
+
+
+from os import listdir
+if __name__ == "__main__":
+    get_all_lyrics()

@@ -6,3 +6,5 @@ pretrained_models/
 deepspeech-0.6.1-models
 out/
 output/
+__pycache__/
+deepspeech-0.6.1-models.tar.gz
